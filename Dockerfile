@@ -16,9 +16,48 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies in stages to avoid conflicts
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Stage 1: Install PyTorch (CPU version)
+RUN pip install --no-cache-dir \
+    --extra-index-url https://download.pytorch.org/whl/cpu \
+    torch==2.2.1+cpu \
+    torchvision==0.17.1+cpu
+
+# Stage 2: Install core dependencies
+RUN pip install --no-cache-dir \
+    numpy==1.26.4 \
+    pillow==10.2.0 \
+    opencv-python-headless==4.9.0.80
+
+# Stage 3: Install web framework
+RUN pip install --no-cache-dir \
+    fastapi==0.109.0 \
+    uvicorn[standard]==0.27.0 \
+    python-multipart==0.0.6
+
+# Stage 4: Install LangChain ecosystem
+RUN pip install --no-cache-dir \
+    pydantic==2.6.0 \
+    openai==1.12.0 \
+    tiktoken==0.5.2 \
+    langchain-core==0.1.23 \
+    langchain==0.1.7 \
+    langchain-openai==0.0.5 \
+    langchain-community==0.0.20 \
+    langgraph==0.0.26
+
+# Stage 5: Install remaining dependencies
+RUN pip install --no-cache-dir \
+    ultralytics==8.1.0 \
+    faiss-cpu==1.7.4 \
+    rank-bm25==0.2.2 \
+    reportlab==4.0.9 \
+    pandas==2.2.0 \
+    python-dotenv==1.0.1 \
+    requests==2.31.0 \
+    huggingface-hub==0.20.3
 
 # Copy application files
 COPY . .
