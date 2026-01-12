@@ -1,0 +1,36 @@
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# ML & Vision (CPU-ONLY)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.2.1+cpu
+torchvision==0.17.1+cpu
+ultralytics==8.1.0
+opencv-python-headless==4.9.0.80  # ← CHANGED from opencv-python
+
+# LLM & RAG
+openai==1.12.0
+langchain==0.1.7
+langchain-openai==0.0.5
+langchain-community==0.0.20
+langchain-core==0.1.23
+langgraph==0.0.26
+tiktoken==0.5.2
+
+# Vector Search
+faiss-cpu==1.7.4
+rank-bm25==0.2.2
+
+# PDF & Data
+reportlab==4.0.9
+pillow==10.2.0
+pandas==2.2.0
+numpy==1.26.4
+
+# Utilities
+python-dotenv==1.0.1
+requests==2.31.0
+pydantic==2.6.0
+huggingface-hub==0.20.3
