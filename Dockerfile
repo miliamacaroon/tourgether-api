@@ -13,9 +13,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-
 # Install Python dependencies in stages to avoid conflicts
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
@@ -37,34 +34,25 @@ RUN pip install --no-cache-dir \
     uvicorn[standard]==0.27.0 \
     python-multipart==0.0.6
 
-# Stage 4: Install LangChain ecosystem (FIXED VERSIONS)
+# Stage 4: Install LangChain (Let pip resolve versions automatically)
 RUN pip install --no-cache-dir \
-    pydantic==2.6.0 \
-    pydantic-core==2.16.1 \
-    openai==1.12.0 \
-    tiktoken==0.5.2
-
-# Install LangChain with compatible versions
-RUN pip install --no-cache-dir \
-    langchain-core==0.1.23 \
-    langchain-text-splitters==0.0.1 \
-    langchain-community==0.0.20 \
-    langchain==0.1.7 \
-    langchain-openai==0.0.5
-
-# Install LangGraph separately
-RUN pip install --no-cache-dir langgraph==0.0.26
+    openai \
+    tiktoken \
+    langchain \
+    langchain-openai \
+    langchain-community \
+    langgraph
 
 # Stage 5: Install remaining dependencies
 RUN pip install --no-cache-dir \
-    ultralytics==8.1.0 \
-    faiss-cpu==1.7.4 \
-    rank-bm25==0.2.2 \
-    reportlab==4.0.9 \
-    pandas==2.2.0 \
-    python-dotenv==1.0.1 \
-    requests==2.31.0 \
-    huggingface-hub==0.20.3
+    ultralytics \
+    faiss-cpu \
+    rank-bm25 \
+    reportlab \
+    pandas \
+    python-dotenv \
+    requests \
+    huggingface-hub
 
 # Copy application files
 COPY . .
