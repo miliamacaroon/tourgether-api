@@ -37,16 +37,23 @@ RUN pip install --no-cache-dir \
     uvicorn[standard]==0.27.0 \
     python-multipart==0.0.6
 
-# Stage 4: Install LangChain ecosystem
+# Stage 4: Install LangChain ecosystem (FIXED VERSIONS)
 RUN pip install --no-cache-dir \
     pydantic==2.6.0 \
+    pydantic-core==2.16.1 \
     openai==1.12.0 \
-    tiktoken==0.5.2 \
+    tiktoken==0.5.2
+
+# Install LangChain with compatible versions
+RUN pip install --no-cache-dir \
     langchain-core==0.1.23 \
-    langchain==0.1.7 \
-    langchain-openai==0.0.5 \
+    langchain-text-splitters==0.0.1 \
     langchain-community==0.0.20 \
-    langgraph==0.0.26
+    langchain==0.1.7 \
+    langchain-openai==0.0.5
+
+# Install LangGraph separately
+RUN pip install --no-cache-dir langgraph==0.0.26
 
 # Stage 5: Install remaining dependencies
 RUN pip install --no-cache-dir \
